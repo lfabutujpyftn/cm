@@ -12,6 +12,8 @@ set(SOURCE_EXEC
 set(HEADER
 ./Header/LU.h)
 
+include_directories(./Header)
+
 add_library(${LIB_NAME} STATIC ${SOURCE_LIB} ${HEADER})
 
 add_executable(${PROJECT_NAME} ${SOURCE_EXEC} ${HEADER})
