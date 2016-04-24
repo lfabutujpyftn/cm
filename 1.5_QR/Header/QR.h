@@ -17,6 +17,7 @@ namespace lab1_5
         system(int size);
         virtual ~system();
         QR* getQR();
+        std::vector<double>* getResult();
         friend void setVar12(system *arg);
         friend void setSam(system *arg);
     };

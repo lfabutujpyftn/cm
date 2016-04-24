@@ -162,3 +162,73 @@ lab1_5::QR* lab1_5::system::getQR()
     }
     return str;
 }
+
+std::vector<double>* lab1_5::system::getResult()
+{
+    std::vector<double>* res = new std::vector < double > ;
+
+    std::vector<std::vector<double> > copy((*(this->matr)));
+
+    double exz = 100;
+    while (exz > this->eps)
+    {
+        QR *qr = this->getQR();
+        std::vector<std::vector<double> > a(this->size, std::vector<double>(this->size, 0));
+        for (int k = 0; k < this->size; ++k)
+        {
+            for (int j = 0; j < this->size; ++j)
+            {
+                double tmp = 0;
+                for (int z = 0; z < this->size; ++z)
+                {
+                    tmp += (*(qr->R))[k][z] * (*(qr->Q))[z][j];
+                }
+                a[k][j] = tmp;
+            }
+        }
+        /*for (int i = 0; i < this->size; ++i)
+        {
+            for (int j = 0; j < this->size; ++j)
+            {
+                std::cout << (*(qr->Q))[i][j] << " ";
+            }
+            std::cout << " -q\n";
+        }
+        for (int i = 0; i < this->size; ++i)
+        {
+            for (int j = 0; j < this->size; ++j)
+            {
+                std::cout << (*(qr->R))[i][j] << " ";
+            }
+            std::cout << " -r\n";
+        }*/
+        (*(this->matr)) = a;
+        delete qr;
+        exz = 0;
+        for (int i = 0; i < this->size; ++i)
+        {
+            for (int j = 0; j < i; ++j)
+            {
+                exz += pow((*(this->matr))[i][j], 2);
+            }
+        }
+        exz = pow(exz, 0.5);
+        //std::cout << "exz " << exz << "\n";
+        /*for (int i = 0; i < this->size; ++i)
+        {
+            for (int j = 0; j < this->size; ++j)
+            {
+                std::cout << (*(this->matr))[i][j] << " ";
+            }
+            std::cout << " -a\n";
+        }
+        _sleep(3000);*/
+    }
+    for (int i = 0; i < this->size; ++i)
+    {
+        res->push_back((*(this->matr))[i][i]);
+    }
+    (*(this->matr)) = copy;
+
+    return res;
+}

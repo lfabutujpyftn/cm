@@ -24,12 +24,15 @@ void print(std::vector<std::vector<double> > *arg)
 int main()
 {
     lab1_5::system sys(3);
-    //lab1_5::setVar12(&sys);
-    lab1_5::setSam(&sys);
-    lab1_5::QR* qr = sys.getQR();
-    print(qr->Q);
-    print(qr->R);
-    delete qr;
+    lab1_5::setVar12(&sys);
+    //lab1_5::setSam(&sys);
+    //lab1_5::QR* qr = sys.getQR();
+    //print(qr->Q);
+    //print(qr->R);
+    //delete qr;
+    std::vector<double> *res = sys.getResult();
+    print(res);
+    delete res;
     system("pause");
     return 0;
 }
