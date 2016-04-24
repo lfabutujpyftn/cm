@@ -1,21 +1,21 @@
-/*#pragma once
+#pragma once
 #include<vector>
-namespace lab1_2
+namespace lab1_3_zeid
 {
     class system
     {
     private:
         int size;
-        std::vector<double> *a;
+        std::vector<std::vector<double> > *sys;
+        std::vector<std::vector<double> > *a;
         std::vector<double> *b;
-        std::vector<double> *c;
         std::vector<double> *ext;
+        double eps;
     public:
         system(int size);
         virtual ~system();
+        void lead();
         std::vector<double>* getResult();
-        bool valid();
         friend void setVar12(system *arg);
     };
 }
-*/

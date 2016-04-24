@@ -1,93 +1,114 @@
-/*#include<iostream>
-#include<Prog.h>
+#include<iostream>
+#include<Zeid.h>
 #include<utility>
 #include<cmath>
-lab1_2::system::system(int size)
+lab1_3_zeid::system::system(int size)
 {
     this->size = size;
-    this->a = new std::vector<double>(size, 0);
-    this->b = new std::vector<double>(size, 0);
-    this->c = new std::vector<double>(size, 0);
+    this->eps = 0.000001;
+    this->sys = new std::vector<std::vector<double> >(size, std::vector<double>(size, 0));
     this->ext = new std::vector<double>(size, 0);
+    this->b = new std::vector<double>(size, 0);
+    this->a = new std::vector<std::vector<double> >(size, std::vector<double>(size, 0));
 }
-lab1_2::system::~system()
+lab1_3_zeid::system::~system()
 {
-    delete this->a;
-    delete this->b;
-    delete this->c;
+    delete this->sys;
     delete this->ext;
 }
 
-void lab1_2::setVar12(system *arg)
+void lab1_3_zeid::setVar12(system *arg)
 {
+    (*(arg->sys))[0][0] = 14;
+    (*(arg->sys))[0][1] = -4;
+    (*(arg->sys))[0][2] = -2;
+    (*(arg->sys))[0][3] = 3;
+    (*(arg->sys))[1][0] = -3;
+    (*(arg->sys))[1][1] = 23;
+    (*(arg->sys))[1][2] = -6;
+    (*(arg->sys))[1][3] = -9;
+    (*(arg->sys))[2][0] = -7;
+    (*(arg->sys))[2][1] = -8;
+    (*(arg->sys))[2][2] = 21;
+    (*(arg->sys))[2][3] = -5;
+    (*(arg->sys))[3][0] = -2;
+    (*(arg->sys))[3][1] = -2;
+    (*(arg->sys))[3][2] = 8;
+    (*(arg->sys))[3][3] = 18;
 
-    (*(arg->a))[0] = 0;
-    (*(arg->a))[1] = 1;
-    (*(arg->a))[2] = -2;
-    (*(arg->a))[3] = 3;
-    (*(arg->a))[4] = 8;
-    (*(arg->b))[0] = -11;
-    (*(arg->b))[1] = -8;
-    (*(arg->b))[2] = -11;
-    //(*(arg->b))[2] = 0;
-    (*(arg->b))[3] = -14;
-    (*(arg->b))[4] = 10;
-    (*(arg->c))[0] = 9;
-    (*(arg->c))[1] = 1;
-    (*(arg->c))[2] = 5;
-    (*(arg->c))[3] = 7;
-    (*(arg->c))[4] = 0;
-
-    (*(arg->ext))[0] = -114;
-    (*(arg->ext))[1] = 81;
-    (*(arg->ext))[2] = -8;
-    (*(arg->ext))[3] = -38;
-    (*(arg->ext))[4] = 144;
+    (*(arg->ext))[0] = 38;
+    (*(arg->ext))[1] = -195;
+    (*(arg->ext))[2] = -27;
+    (*(arg->ext))[3] = 142;
 }
 
-
-std::vector<double>* lab1_2::system::getResult()
+void lab1_3_zeid::system::lead()
 {
-    std::vector<double> *res = new std::vector<double>(this->size, 0);
-    std::vector<double> P(this->size, 0);
-    std::vector<double> Q(this->size, 0);
-
-    if (!(this->valid()))
+    for (int i = 0; i < this->size; ++i)
     {
-        return nullptr;
+        (*(this->b))[i] = (*(this->ext))[i] / (*(this->sys))[i][i];
     }
-
-    P[0] = -1 * (*(this->c))[0] / (*(this->b))[0];
-    Q[0] = (*(this->ext))[0] / (*(this->b))[0];
-
-    for (int i = 1; i < this->a->size(); ++i)
+    for (int i = 0; i < this->size; ++i)
     {
-        P[i] = -1 * (*(this->c))[i] / ((*(this->b))[i] + (*(this->a))[i] * P[i - 1]);
-        Q[i] = ((*(this->ext))[i] - (*(this->a))[i] * Q[i - 1]) / ((*(this->b))[i] + (*(this->a))[i] * P[i - 1]);
+        for (int j = 0; j < this->size; ++j)
+        {
+            if (i == j)
+                (*(this->a))[i][j] = 0;
+            else
+                (*(this->a))[i][j] = -1 * (*(this->sys))[i][j] / (*(this->sys))[i][i];
+        }
     }
+}
 
-    (*(res))[P.size() - 1] = Q[P.size() - 1];
+std::vector<double>* lab1_3_zeid::system::getResult()
+{
+    std::vector<double> *res = new std::vector<double>((*(this->b)));
 
-    for (int i = P.size() - 2; i >= 0; --i)
+    double alph = 0;
+    for (int i = 0; i < this->size; ++i)
     {
-        (*(res))[i] = P[i] * (*(res))[i + 1] + Q[i];
+        for (int j = 0; j < this->size; ++j)
+        {
+            alph += pow((*(this->a))[i][j], 2);
+        }
     }
-
+    alph = pow(alph, 0.5);
+    if (alph >= 1)
+    {
+        std::cout << "Error: alph = " << alph << "\n";
+        return res;
+    }
+    alph = alph / (1 - alph);
+    int count = 0;
+    while (true)
+    {
+        count++;
+        if (count >= 1000)
+        {
+            std::cout << "Error: count = " << count << "\n";
+            break;
+        }
+        std::vector<double> tmp(*res);
+        for (int i = 0; i < this->size; ++i)
+        {
+            double value = 0;
+            for (int j = 0; j < this->size; ++j)
+            {
+                value += (*(this->a))[i][j] * (*(res))[j];
+            }
+            (*(res))[i] = (*(this->b))[i] + value;
+        }
+        double x = 0;
+        for (int i = 0; i < this->size; ++i)
+        {
+            x += pow((*(res))[i] - tmp[i], 2);
+        }
+        x = pow(x, 0.5);
+        if (alph * x < this->eps)
+        {
+            std::cout << "Count = " << count << "\n";
+            break;
+        }
+    }
     return res;
 }
-
-bool lab1_2::system::valid()
-{
-    for (int i = 1; i < this->c->size() - 1; ++i)
-    {
-        if ((*(this->a))[i] == 0 || (*(this->c))[i] == 0)
-            return false;
-    }
-    for (int i = 0; i < this->c->size(); ++i)
-    {
-        if (abs((*(this->b))[i]) < abs((*(this->a))[i]) + abs((*(this->c))[i]))
-            return false;
-    }
-    return true;
-}
-*/

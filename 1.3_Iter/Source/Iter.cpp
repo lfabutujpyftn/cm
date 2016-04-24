@@ -91,12 +91,12 @@ std::vector<double>* lab1_3_iter::system::getResult()
         std::vector<double> tmp(*res);
         for (int i = 0; i < this->size; ++i)
         {
-            double tmp = 0;
+            double value = 0;
             for (int j = 0; j < this->size; ++j)
             {
-                tmp += (*(this->a))[i][j] * (*(res))[j];
+                value += (*(this->a))[i][j] * tmp[j];
             }
-            (*(res))[i] = (*(this->b))[i] + tmp;
+            (*(res))[i] = (*(this->b))[i] + value;
         }
         double x = 0;
         for (int i = 0; i < this->size; ++i)
