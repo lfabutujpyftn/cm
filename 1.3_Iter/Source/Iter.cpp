@@ -112,3 +112,13 @@ std::vector<double>* lab1_3_iter::system::getResult()
     }
     return res;
 }
+
+void lab1_3_iter::system::setSys(int i, int j, double arg)
+{
+    (*(this->sys))[i][j] = arg;
+}
+
+void lab1_3_iter::system::setExt(int i, double arg)
+{
+    (*(this->ext))[i] = arg;
+}

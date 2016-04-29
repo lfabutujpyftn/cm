@@ -15,6 +15,8 @@ namespace lab1_3_iter
         system(int size);
         virtual ~system();
         void lead();
+        void setSys(int i, int j, double arg);
+        void setExt(int i, double arg);
         std::vector<double>* getResult();
         friend void setVar12(system *arg);
     };

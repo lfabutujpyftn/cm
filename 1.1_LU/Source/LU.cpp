@@ -238,3 +238,12 @@ std::vector<std::vector<double> >* lab1_1::system::getRevers()
 
     return res;
 }
+void lab1_1::system::setSys(int i, int j, double arg)
+{
+    (*(this->sys))[i][j] = arg;
+}
+
+void lab1_1::system::setExt(int i, double arg)
+{
+    (*(this->ext))[i] = arg;
+}

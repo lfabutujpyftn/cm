@@ -6,6 +6,7 @@ int main()
     std::vector<double>* res1 = eq.getResultIter();
     std::vector<double>* res2 = eq.getResultNewton();
     delete res1;
+    delete res2;
     system("pause");
     return 0;
 }

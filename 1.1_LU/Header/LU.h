@@ -24,6 +24,8 @@ namespace lab1_1
         LU* getLU();
         std::vector<double>* getResult(LU* lu);
         std::vector<std::vector<double> >* getRevers();
+        void setSys(int i, int j, double arg);
+        void setExt(int i, double arg);
         double det(LU* lu);
         friend void setVar1(system *arg);
         friend void setVar12(system *arg);
