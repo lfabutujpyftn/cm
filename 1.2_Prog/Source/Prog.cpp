@@ -90,3 +90,20 @@ bool lab1_2::system::valid()
     }
     return true;
 }
+
+void lab1_2::system::seta(int i, double val)
+{
+    (*(this->a))[i] = val;
+}
+void lab1_2::system::setb(int i, double val)
+{
+    (*(this->b))[i] = val;
+}
+void lab1_2::system::setc(int i, double val)
+{
+    (*(this->c))[i] = val;
+}
+void lab1_2::system::setext(int i, double val)
+{
+    (*(this->ext))[i] = val;
+}

@@ -15,6 +15,10 @@ namespace lab1_2
         virtual ~system();
         std::vector<double>* getResult();
         bool valid();
+        void seta(int i, double val);
+        void setb(int i, double val);
+        void setc(int i, double val);
+        void setext(int i, double val);
         friend void setVar12(system *arg);
     };
 }
