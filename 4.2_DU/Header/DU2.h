@@ -15,7 +15,8 @@ namespace lab4_2
         func();
         virtual ~func();
         void getTable();
-        void getRes();
+        void getRes1();
+        void getRes2();
         friend class DU;
     };
     class DU

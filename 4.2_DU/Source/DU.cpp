@@ -2,6 +2,7 @@
 #include<DU2.h>
 #include<utility>
 #include<cmath>
+#include<Prog.h>
 
 lab4_2::func::func()
 {
@@ -26,7 +27,7 @@ void lab4_2::func::getTable()
     }
 }
 
-void lab4_2::func::getRes()
+void lab4_2::func::getRes1()
 {
     DU du(this);
     double n1 = 2.0;
@@ -91,4 +92,40 @@ double lab4_2::DU::getValue(double nu, bool p)
             std::cout << "x: " << x + this->arg->h << " y: " << yi << "\n";
     }
     return yi;
+}
+
+void lab4_2::func::getRes2()
+{
+    double h = this->h * 10;
+    int n = (this->b - this->a) / h;
+    std::cout << "n " << n << "\n";
+    lab1_2::system sys(n);
+    sys.seta(0, 0);
+    sys.setb(0, -2 + h * h * 2);
+    sys.setc(0, 1 + -tan(this->a) * h / 2);
+    sys.setext(0, -2 * (1 + tan(this->a) * h / 2));
+    for (int i = 1; i < n - 1; ++i)
+    {
+        //std::cout << " k1 " << 1 + tan(this->a + i * h) * h / 2 << "\n";
+        sys.seta(i, (1 + tan(this->a + i * h) * h / 2));
+
+        //std::cout << " k2 " << -2 + h * h * 22 << "\n";
+        sys.setb(i, -2 + h * h * 2);
+
+        //std::cout << " k3 " << 1 - tan(this->a + i * h) * h / 2 << "\n";
+        sys.setc(i, (1 - tan(this->a + i * h) * h / 2));
+        sys.setext(i, 0);
+    }
+    sys.seta(n - 1, (1 + tan(this->b - h) * h / 2));
+    sys.setb(n - 1, -2 + h * h * 2);
+    sys.setc(n - 1, 0);
+    sys.setext(n - 1, -(2.5 - 0.5 * log(3)) * (1 - tan(this->b - h) * h / 2));
+    std::vector <double> *res = sys.getResult();
+    /*if (res == nullptr)
+        std::cout << "error\n";*/
+    //std::cout << (*(res))[0] << "\n";
+    for (int i = 0; i < n; ++i)
+    {
+        std::cout << "x " << this->a + i*h << " y: " << (*(res))[i] << "\n";
+    }
 }

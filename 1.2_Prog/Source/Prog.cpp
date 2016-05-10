@@ -52,10 +52,10 @@ std::vector<double>* lab1_2::system::getResult()
     std::vector<double> P(this->size, 0);
     std::vector<double> Q(this->size, 0);
 
-    if (!(this->valid()))
+    /*if (!(this->valid()))
     {
         return nullptr;
-    }
+    }*/
 
     P[0] = -1 * (*(this->c))[0] / (*(this->b))[0];
     Q[0] = (*(this->ext))[0] / (*(this->b))[0];
