@@ -37,7 +37,7 @@ void lab4_1::func::getEuler()
             yi = yi + h * fi;
         else
         {
-            yi = yi + h * f(x - h, yi);
+            yi = yi + h * f(x, yi);
         }
     }
 }

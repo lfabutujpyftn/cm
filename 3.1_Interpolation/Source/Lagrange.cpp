@@ -40,7 +40,7 @@ double lab3_1_lagr::polynom::getvalue(double arg)
     {
         
         fxi += (*(this->t))[i].second * this->getlagr(i, arg);
-      //  std::cout << "fxi " << fxi << "\n";
+        //std::cout << "xi " << (*(this->t))[i].first << " fxi " << fxi << "\n";
     }
     return fxi;
 }
@@ -55,7 +55,7 @@ double lab3_1_lagr::polynom::getlagr(int i, double x)
         tmp *= (x - (*(this->t))[j].first) / ((*(this->t))[i].first - (*(this->t))[j].first);
         
     }
-   // std::cout << "lagr x: " << x << " tmp: " << tmp << "\n";
+    //std::cout << "lagr x: " << x << " tmp: " << tmp << "\n";
     return tmp;
 }
 
@@ -96,5 +96,14 @@ void lab3_1_lagr::polynom::setB()
     for (int i = 0; i < x.size(); ++i)
     {
         this->t->push_back(std::make_pair(x[i], log(x[i]) + x[i]));
+    }
+}
+
+void lab3_1_lagr::polynom::val()
+{
+    std::cout << "x:   y:\n";
+    for (double x = 0.1; x < 1.3; x += 0.05)
+    {
+        std::cout << x << "    " << this->getvalue(x) << "\n";
     }
 }

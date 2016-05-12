@@ -16,5 +16,6 @@ namespace lab3_1_lagr
         void setB();
         void initInterpolation();
         double getvalue(double x);
+        void val();
     };
 }

@@ -99,3 +99,12 @@ double lab3_1_newt::polynom::f4(int i, int j, int k, int z)
 {
     return (f3(i, j, k) - f3(j, k, z)) / ((*(this->t))[i].first - (*(this->t))[z].first);
 }
+
+void lab3_1_newt::polynom::val()
+{
+    std::cout << "x:   y:\n";
+    for (double x = 0.1; x < 1.3; x += 0.05)
+    {
+        std::cout << x << "    " << this->getvalue(x) << "\n";
+    }
+}

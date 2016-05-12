@@ -7,12 +7,14 @@ int main()
     //lagr.initInterpolation();
     double x = 0.8;
     lagr.setA();
+    lagr.val();
     std::cout << "a) fx: " << log(x) + x << " Lx: " << lagr.getvalue(x) << " |fx-Lx|: " << fabs(log(x) + x - lagr.getvalue(x)) << "\n";
     lagr.setB();
     std::cout << "b) fx: " << log(x) + x << " Lx: " << lagr.getvalue(x) << " |fx-Lx|: " << fabs(log(x) + x - lagr.getvalue(x)) << "\n";
     
     lab3_1_newt::polynom newt;
     newt.setA();
+    newt.val();
     //newt.initInterpolation();
     std::cout << "a) fx: " << log(x) + x << " Nx: " << newt.getvalue(x) << " |fx-Nx|: " << fabs(log(x) + x - newt.getvalue(x)) << "\n";
     newt.setB();

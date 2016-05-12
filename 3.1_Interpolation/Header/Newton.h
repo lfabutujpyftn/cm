@@ -19,5 +19,6 @@ namespace lab3_1_newt
         double f2(int i, int j);
         double f3(int i, int j, int k);
         double f4(int i, int j, int k, int z);
+        void val();
     };
 }
