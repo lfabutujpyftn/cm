@@ -230,42 +230,170 @@ void lab4_1::func::getRK()
 
 void lab4_1::func::getAdams()
 {
+    if (this->sth)
+    {
+        delete this->sth;
+        this->sth = new std::vector < double >;
+    }
+    if (this->st2h)
+    {
+        delete this->st2h;
+        this->st2h = new std::vector < double >;
+    }
+    std::vector<double> afi;
+    std::vector<double> z;
     double yi = 7;
     double fi = 5;
-    int i = 1;
-    std::vector<double> afi;
-    afi.push_back(yi);
-    for (double x = a; x <= b + h / 3 && i < 4; x += h, ++i)
+    double zi = fi;
+    int i = 0;
+    for (double x = a; x <= b + h / 3; x += h)
     {
-        //std::cout << "x: " << x << " y: " << yi << "\n";
-        double k1 = 0;
-        if (x == a)
-            k1 = h * fi;
-        else
-            k1 = h * f(x, yi);
-        double k2 = h * f(x + 1.0 / 3 * h, yi + 1.0 / 3 * k1);
-        double k3 = h * f(x + 2.0 / 3 * h, yi + 2.0 / 3 * k2);;
-        double dy = 1.0 / 4 * (k1 + 3 * k3);
-        /*std::cout << "k1: " << k1 << "\n";
-        std::cout << "k2: " << k2 << "\n";
-        std::cout << "k3: " << k3 << "\n";
-        std::cout << "dy: " << dy << "\n";*/
-        yi = yi + dy;
+        if (i >= 4)
+            break;
+        ++i;
+        if (x != a)
+        {
+            double z1 = 0;
+            double z2 = 0;
+            //std::cout << "x: " << x << " y: " << yi << "\n";
+            {
+                double k1 = 0;
+                if (x == a)
+                    k1 = h * fi;
+                else
+                    k1 = h * f(x, yi, zi);
+                double k2 = h * f(x + 1.0 / 3 * h, yi + 1.0 / 3 * k1, zi);
+                double k3 = h * f(x + 2.0 / 3 * h, yi + 2.0 / 3 * k2, zi);
+                double dz = 1.0 / 4 * (k1 + 3 * k3);
+                /*std::cout << "k1: " << k1 << "\n";
+                std::cout << "k2: " << k2 << "\n";
+                std::cout << "k3: " << k3 << "\n";
+                std::cout << "dy: " << dy << "\n";*/
+                zi = zi + dz;
+                k1 = h * f(x + 1.0 / 3 * h, yi + 1.0 / 3 * zi, zi);
+                k2 = h * f(x + 2.0 / 3 * h, yi + 1.0 / 3 * k1 + 1.0 / 3 * zi, zi);
+                k3 = h * f(x + 3.0 / 3 * h, yi + 2.0 / 3 * k2 + 1.0 / 3 * zi, zi);
+                dz = 1.0 / 4 * (k1 + 3 * k3);
+                z1 = zi + dz;
+                k1 = h * f(x + 2.0 / 3 * h, yi + 2.0 / 3 * z1, zi);
+                k2 = h * f(x + 3.0 / 3 * h, yi + 1.0 / 3 * k1 + 2.0 / 3 * z1, zi);
+                k3 = h * f(x + 4.0 / 3 * h, yi + 2.0 / 3 * k2 + 2.0 / 3 * z1, zi);
+                dz = 1.0 / 4 * (k1 + 3 * k3);
+                z2 = zi + dz;
+            }
+        {
+            double k1 = 0;
+            if (x == a)
+                k1 = h * zi;
+            else
+                k1 = h * zi;
+            double k2 = h * z1;
+            double k3 = h * z2;
+            double dy = 1.0 / 4 * (k1 + 3 * k3);
+            /*std::cout << "k1: " << k1 << "\n";
+            std::cout << "k2: " << k2 << "\n";
+            std::cout << "k3: " << k3 << "\n";
+            std::cout << "*/
+            yi = yi + dy;
+        }
+        }
+        this->sth->push_back(yi);
         afi.push_back(yi);
+        z.push_back(zi);
     }
    // std::cout << "i: " << i << "\n";
     for (double x = a + 4 * h; x <= b + h / 3; x += h, ++i)
     {
 
+        zi = zi + h / 24 * (55 * f(x, afi[i - 1], z[i-1]) - 59 * f(x - 1 * h, afi[i - 2], z[i -2])
+            + 37 * f(x - 2 * h, afi[i - 3], z[i - 3]) - 9 * f(x - 3 * h, afi[i - 4], z[i - 4]));
         //std::cout << "i: " << i << "\n";
-        yi = yi + h / 24 * (55 * f(x, afi[i - 1]) - 59 * f(x - 1 * h, afi[i - 2]) + 37 * f(x - 2*h, afi[i - 3])
-            - 9 * f(x - 3*h, afi[i - 4]));
+        yi = yi + h / 24 * (55 * z[i - 1] - 59 * z[i - 2] + 37 * z[i-3] - 9 * z[i-4]);
         afi.push_back(yi);
+        z.push_back(zi);
+        this->sth->push_back(yi);
     }
-    for (int i = 0; i < afi.size(); ++i)
+    /*for (int i = 0; i < afi.size(); ++i)
     {
         std::cout << "x: " << a + i * h << " y: " <<  afi[i] << "\n";
+    }*/
+    afi.clear();
+    z.clear();
+    h /= 2;
+
+    yi = 7;
+    fi = 5;
+    zi = fi;
+    i = 0;
+    for (double x = a; x <= b + h / 3; x += h)
+    {
+        if (i >= 4)
+            break;
+        ++i;
+        if (x != a)
+        {
+            double z1 = 0;
+            double z2 = 0;
+            //std::cout << "x: " << x << " y: " << yi << "\n";
+            {
+                double k1 = 0;
+                if (x == a)
+                    k1 = h * fi;
+                else
+                    k1 = h * f(x, yi, zi);
+                double k2 = h * f(x + 1.0 / 3 * h, yi + 1.0 / 3 * k1, zi);
+                double k3 = h * f(x + 2.0 / 3 * h, yi + 2.0 / 3 * k2, zi);
+                double dz = 1.0 / 4 * (k1 + 3 * k3);
+                /*std::cout << "k1: " << k1 << "\n";
+                std::cout << "k2: " << k2 << "\n";
+                std::cout << "k3: " << k3 << "\n";
+                std::cout << "dy: " << dy << "\n";*/
+                zi = zi + dz;
+                k1 = h * f(x + 1.0 / 3 * h, yi + 1.0 / 3 * zi, zi);
+                k2 = h * f(x + 2.0 / 3 * h, yi + 1.0 / 3 * k1 + 1.0 / 3 * zi, zi);
+                k3 = h * f(x + 3.0 / 3 * h, yi + 2.0 / 3 * k2 + 1.0 / 3 * zi, zi);
+                dz = 1.0 / 4 * (k1 + 3 * k3);
+                z1 = zi + dz;
+                k1 = h * f(x + 2.0 / 3 * h, yi + 2.0 / 3 * z1, zi);
+                k2 = h * f(x + 3.0 / 3 * h, yi + 1.0 / 3 * k1 + 2.0 / 3 * z1, zi);
+                k3 = h * f(x + 4.0 / 3 * h, yi + 2.0 / 3 * k2 + 2.0 / 3 * z1, zi);
+                dz = 1.0 / 4 * (k1 + 3 * k3);
+                z2 = zi + dz;
+            }
+        {
+            double k1 = 0;
+            if (x == a)
+                k1 = h * zi;
+            else
+                k1 = h * zi;
+            double k2 = h * z1;
+            double k3 = h * z2;
+            double dy = 1.0 / 4 * (k1 + 3 * k3);
+            /*std::cout << "k1: " << k1 << "\n";
+            std::cout << "k2: " << k2 << "\n";
+            std::cout << "k3: " << k3 << "\n";
+            std::cout << "*/
+            yi = yi + dy;
+        }
+        }
+        this->st2h->push_back(yi);
+        afi.push_back(yi);
+        z.push_back(zi);
     }
+    // std::cout << "i: " << i << "\n";
+    for (double x = a + 4 * h; x <= b + h / 3; x += h, ++i)
+    {
+
+        zi = zi + h / 24 * (55 * f(x, afi[i - 1], z[i - 1]) - 59 * f(x - 1 * h, afi[i - 2], z[i - 2])
+            + 37 * f(x - 2 * h, afi[i - 3], z[i - 3]) - 9 * f(x - 3 * h, afi[i - 4], z[i - 4]));
+        //std::cout << "i: " << i << "\n";
+        yi = yi + h / 24 * (55 * z[i - 1] - 59 * z[i - 2] + 37 * z[i - 3] - 9 * z[i - 4]);
+        afi.push_back(yi);
+        z.push_back(zi);
+        this->st2h->push_back(yi);
+    }
+
+    h *= 2;
 }
 
 void lab4_1::func::getRumRob(int p)

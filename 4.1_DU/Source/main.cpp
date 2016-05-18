@@ -11,13 +11,15 @@ int main()
     f.getEuler();
     f.printResult();
     f.getRumRob(1);*/
-    std::cout << "=======\n";
+    /*std::cout << "=======\n";
     f.getRK();
     f.printResult();
-    f.getRumRob(3);
-    /*std::cout << "=======\n";
-    f.getAdams();
+    f.getRumRob(3);*/
     std::cout << "=======\n";
+    f.getAdams();
+    f.printResult();
+    f.getRumRob(4);
+    /*std::cout << "=======\n";
     f.getRumRob();
     std::cout << "=======\n";*/
     system("pause");
