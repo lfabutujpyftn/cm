@@ -7,9 +7,13 @@ int main()
     f.getTable();
     std::cout << "=======\n";
     f.getRes1();
-    std::cout << "=======\n";
+    f.printResult();
+    f.getRumRob(1);
+    /*std::cout << "=======\n";
     f.getRes2();
-    std::cout << "=======\n";
+    f.printResult();
+    f.getRumRob(1);
+    std::cout << "=======\n";*/
     system("pause");
     return 0;
 }

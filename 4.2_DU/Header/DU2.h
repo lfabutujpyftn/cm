@@ -10,6 +10,11 @@ namespace lab4_2
         double b;
         double f(double x);
         double f(double x, double y);
+        double f(double x, double y, double z);
+        std::vector<double> *sth;
+        std::vector<double> *st2h;
+        
+
         
     public:
         func();
@@ -17,6 +22,8 @@ namespace lab4_2
         void getTable();
         void getRes1();
         void getRes2();
+        void printResult();
+        void getRumRob(int p); 
         friend class DU;
     };
     class DU
