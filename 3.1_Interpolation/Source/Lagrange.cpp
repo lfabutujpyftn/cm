@@ -102,7 +102,7 @@ void lab3_1_lagr::polynom::setB()
 void lab3_1_lagr::polynom::val()
 {
     std::cout << "x:   y:\n";
-    for (double x = 0.1; x < 1.3; x += 0.05)
+    for (double x = 0.1; x < 1.3; x += 0.01)
     {
         std::cout << x << "    " << this->getvalue(x) << "\n";
     }

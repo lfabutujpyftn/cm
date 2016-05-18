@@ -10,6 +10,10 @@ namespace lab4_1
         double b;
         double f(double x);
         double f(double x, double y);
+        double f(double x, double y, double z);
+        std::vector<double> *sth;
+        std::vector<double> *st2h;
+
     public:
         func();
         virtual ~func();
@@ -17,6 +21,7 @@ namespace lab4_1
         void getEuler();
         void getRK();
         void getAdams();
-        void getRumRob();
+        void getRumRob(int p);
+        void printResult();
     };
 }

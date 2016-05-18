@@ -55,9 +55,12 @@ void lab3_2::spline::initInterpolation()
     sys.setext(1, 3 * ((1.5624 - 0.79464) / 0.4 - (0.79464 - -0.19315) / 0.4));
     sys.setext(2, 3 * ((2.2306 - 1.5624) / 0.4 - (1.5624 - 0.79464) / 0.4));
     std::vector<double> *res = sys.getResult();
-    
+    /*for (int i = 0; i < res->size(); ++i)
+    {
+        std::cout << "r " << (*(res))[i] << "\n";
+    }*/
     (*(this->a))[0] = 0;
-    for (int i = 0; i < this->f->size() - 1; ++i)
+    for (int i = 0; i < this->a->size(); ++i)
     {
         (*(this->a))[i] = (*(this->f))[i];
     }
@@ -66,19 +69,27 @@ void lab3_2::spline::initInterpolation()
     {
         (*(this->c))[i + 1] = (*(res))[i];
     }
-    for (int i = 1; i < this->f->size() - 2; ++i)
+    for (int i = 0; i < this->b->size() - 2; ++i)
     {
-        (*(this->b))[i] = ((*(this->f))[i] - (*(this->f))[i - 1]) / 0.4 - 1 / 3 * 0.4 * ((*(this->c))[i + 1] - 2 * (*(this->c))[i]);
+        (*(this->b))[i] = ((*(this->f))[i + 1] - (*(this->f))[i]) / 0.4 - 1.0 / 3.0 * 0.4 * ((*(this->c))[i + 2] + 2.0 * (*(this->c))[i + 1]);
     }
-    for (int i = 0; i < this->f->size() - 2; ++i)
+    for (int i = 0; i < this->d->size() - 2; ++i)
     {
-        (*(this->d))[i] = ((*(this->c))[i + 1] - (*(this->c))[i]) / (3 * 0.4);
+        (*(this->d))[i] = ((*(this->c))[i + 2] - (*(this->c))[i + 1]) / (3.0 * 0.4);
     }
     (*(this->c))[0] = 0;
-    int n = this->f->size() - 2;
-    (*(this->b))[3] = ((*(this->f))[n] - (*(this->f))[n - 1]) / 0.4 - 2 / 3 * 0.4 * (*(res))[res->size() - 1];
+    //int n = this->f->size() - 2;
+    int n = 3;
+    (*(this->b))[3] = ((*(this->f))[n] - (*(this->f))[n - 1]) / 0.4 - 2.0 / 3 * 0.4 * (*(res))[res->size() - 1];
     (*(this->d))[3] = -(*(res))[res->size() - 1] / (3 * 0.4);
     delete res;
+    for (int i = 0; i < this->a->size(); ++i)
+    {
+        std::cout << "a " << (*(this->a))[i] << " " <<
+            "b " << (*(this->b))[i] << " " <<
+            "c " << (*(this->c))[i] << " " <<
+            "d " << (*(this->d))[i] << "\n";
+    }
 }
 
 double lab3_2::spline::getvalue(double arg)
@@ -102,15 +113,25 @@ double lab3_2::spline::getvalue(double arg)
     }
     */
     int i = 0;
-    while (arg > (*(this->x))[i])
+    while (arg >= (*(this->x))[i])
     {
-       // std::cout << "arg " << arg << " x " << (*(this->x))[i] << "\n";
+      //  std::cout << "arg " << arg << " x " << (*(this->x))[i] << "\n";
         ++i;
     }
     //std::cout << "i: " << i << "\n";
-
+    --i;
+    //if ()
     fxi = (*(this->a))[i] + (*(this->b))[i] * (arg - (*(this->x))[i]) + (*(this->c))[i] * 
         pow((arg - (*(this->x))[i]), 2) + (*(this->d))[i] * pow((arg - (*(this->x))[i]), 3);
     //std::cout << "fxi: " << fxi << "\n";
     return fxi;
+}
+
+void lab3_2::spline::val()
+{
+    std::cout << "# x y\n";
+    for (double x = 0.1; x < 1.7; x += 0.01)
+    {
+        std::cout << x << " " << this->getvalue(x) << "\n";
+    }
 }

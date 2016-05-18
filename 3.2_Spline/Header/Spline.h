@@ -16,5 +16,6 @@ namespace lab3_2
         virtual ~spline();
         void initInterpolation();
         double getvalue(double x);
+        void val();
     };
 }

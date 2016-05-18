@@ -5,15 +5,21 @@ int main()
     lab4_1::func f;
     std::cout << "=======\n";
     f.getTable();
-    std::cout << "=======\n";
+    f.printResult();
+    //f.getRumRob(1);
+    /*std::cout << "=======\n";
     f.getEuler();
+    f.printResult();
+    f.getRumRob(1);*/
     std::cout << "=======\n";
     f.getRK();
-    std::cout << "=======\n";
+    f.printResult();
+    f.getRumRob(3);
+    /*std::cout << "=======\n";
     f.getAdams();
     std::cout << "=======\n";
     f.getRumRob();
-    std::cout << "=======\n";
+    std::cout << "=======\n";*/
     system("pause");
     return 0;
 }
