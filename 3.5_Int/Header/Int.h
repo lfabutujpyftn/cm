@@ -19,6 +19,8 @@ namespace lab3_5
         double getIntTh2();
         double getIntSh1();
         double getIntSh2();
-        double getRumbRomb();
+        double getRumbRombP();
+        double getRumbRombT();
+        double getRumbRombS();
     };
 }

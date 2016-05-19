@@ -137,7 +137,19 @@ double lab3_5::func::getIntSh2()
     return res * h2 / 3;
 }
 
-double lab3_5::func::getRumbRomb()
+double lab3_5::func::getRumbRombP()
+{
+    double p = 1.0;
+    return this->getIntPh1() + (this->getIntPh1() - this->getIntPh2()) / (pow(2, p) - 1);
+}
+
+double lab3_5::func::getRumbRombT()
+{
+    double p = 2.0;
+    return this->getIntTh1() + (this->getIntTh1() - this->getIntTh2()) / (pow(2, p) - 1);
+}
+
+double lab3_5::func::getRumbRombS()
 {
     double p = 4.0;
     return this->getIntSh1() + (this->getIntSh1() - this->getIntSh2()) / (pow(2, p) - 1);
