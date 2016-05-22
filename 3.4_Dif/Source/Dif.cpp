@@ -36,7 +36,7 @@ double lab3_4::func::getDif2()
 {
     double dif = 0;
     int i = 2;
-    dif = 2 * (((y[i + 2] - y[i + 1]) / (x[i + 2] - x[i + 1])
-        - (y[i + 1] - y[i]) / (x[i + 1] - x[i])) / (x[i + 2] - x[i]));
+    dif = (((y[i + 2] - y[i + 1]) / (x[i + 2] - x[i + 1])
+        - (y[i + 1] - y[i]) / (x[i + 1] - x[i])) / (x[i + 1] - x[i]));
     return dif;
 }

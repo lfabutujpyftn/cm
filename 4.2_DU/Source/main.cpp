@@ -9,11 +9,11 @@ int main()
     f.getRes1();
     f.printResult();
     f.getRumRob(1);
-    /*std::cout << "=======\n";
+    std::cout << "=======\n";
     f.getRes2();
     f.printResult();
     f.getRumRob(1);
-    std::cout << "=======\n";*/
+    std::cout << "=======\n";
     system("pause");
     return 0;
 }

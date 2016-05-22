@@ -107,3 +107,11 @@ void lab1_2::system::setext(int i, double val)
 {
     (*(this->ext))[i] = val;
 }
+
+void lab1_2::system::print()
+{
+    for (int i = 0; i < this->a->size(); ++i)
+    {
+        std::cout << (*(this->a))[i] << " " << (*(this->b))[i] << " " << (*(this->c))[i] << "\n";
+    }
+}

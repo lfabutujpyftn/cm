@@ -30,6 +30,7 @@ namespace lab1_1
         friend void setVar1(system *arg);
         friend void setVar12(system *arg);
         friend void print(system *arg);
+        void print();
 
 
     };

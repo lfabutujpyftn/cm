@@ -50,37 +50,38 @@ double lab3_5::func::getIntPh2()
 double lab3_5::func::getIntTh1()
 {
     double res = 0;
-    double a = x0;
+    double a = x0 + h1;
     while (a <= xk)
     {
-        if (a == x0 || a == xk)
+        /*if (a == x0 || a == xk)
         {
             res += f(a) / 2;
             a += h1;
             continue;
-        }
-        res += f(a);
+        }*/
+        //std::cout << a << " " << a - h1 << "\n";
+        res += (f(a) + f(a - h1));
         a += h1;
     }
-    return res * h1;
+    return 0.5*res * h1;
 }
 
 double lab3_5::func::getIntTh2()
 {
     double res = 0;
-    double a = x0;
+    double a = x0 + h2;
     while (a <= xk)
     {
-        if (a == x0 || a == xk)
+        /*if (a == x0 || a == xk)
         {
             res += f(a) / 2;
             a += h2;
             continue;
-        }
-        res += f(a);
+        }*/
+        res += (f(a) + f(a - h2));
         a += h2;
     }
-    return res * h2;
+    return 0.5*res * h2;
 }
 
 double lab3_5::func::getIntSh1()
@@ -94,6 +95,7 @@ double lab3_5::func::getIntSh1()
         {
             res += f(a);
             a += h1;
+            ++i;
             continue;
         }
         if (i % 2 == 1)
@@ -121,6 +123,7 @@ double lab3_5::func::getIntSh2()
         {
             res += f(a);
             a += h2;
+            ++i;
             continue;
         }
         if (i % 2 == 1)
@@ -140,17 +143,17 @@ double lab3_5::func::getIntSh2()
 double lab3_5::func::getRumbRombP()
 {
     double p = 1.0;
-    return this->getIntPh1() + (this->getIntPh1() - this->getIntPh2()) / (pow(2, p) - 1);
+    return this->getIntPh2() + (this->getIntPh2() - this->getIntPh1()) / (pow(2, p) - 1);
 }
 
 double lab3_5::func::getRumbRombT()
 {
     double p = 2.0;
-    return this->getIntTh1() + (this->getIntTh1() - this->getIntTh2()) / (pow(2, p) - 1);
+    return this->getIntTh2() + (this->getIntTh2() - this->getIntTh1()) / (pow(2, p) - 1);
 }
 
 double lab3_5::func::getRumbRombS()
 {
     double p = 4.0;
-    return this->getIntSh1() + (this->getIntSh1() - this->getIntSh2()) / (pow(2, p) - 1);
+    return this->getIntSh2() + (this->getIntSh2() - this->getIntSh1()) / (pow(2, p) - 1);
 }

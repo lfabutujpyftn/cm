@@ -247,3 +247,15 @@ void lab1_1::system::setExt(int i, double arg)
 {
     (*(this->ext))[i] = arg;
 }
+
+void lab1_1::system::print()
+{
+    for (int i = 0; i < this->sys->size(); ++i)
+    {
+        for (int j = 0; j < this->sys->size(); ++j)
+        {
+            std::cout << (*(this->sys))[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}

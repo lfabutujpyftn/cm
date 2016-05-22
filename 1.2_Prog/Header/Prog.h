@@ -20,5 +20,6 @@ namespace lab1_2
         void setc(int i, double val);
         void setext(int i, double val);
         friend void setVar12(system *arg);
+        void print();
     };
 }
