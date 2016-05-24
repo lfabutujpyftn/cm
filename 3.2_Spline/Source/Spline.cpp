@@ -4,14 +4,10 @@
 #include<cmath>
 #include<Prog.h>
 
-lab3_2::spline::spline()
+/*lab3_2::spline::spline()
 {
    // this->t = nullptr;
     //this->ti = nullptr;
-    /*for (int i = 0; i < x.size(); ++i)
-    {
-        std::cout << (*(this->t))[i].first << " : " << (*(this->t))[i].second << "\n";
-    }*/
     this->x = new std::vector < double > ;
     this->x->push_back(0.1);
     this->x->push_back(0.5);
@@ -55,11 +51,11 @@ void lab3_2::spline::initInterpolation()
     sys.setext(1, 3 * ((1.5624 - 0.79464) / 0.4 - (0.79464 - -0.19315) / 0.4));
     sys.setext(2, 3 * ((2.2306 - 1.5624) / 0.4 - (1.5624 - 0.79464) / 0.4));
     std::vector<double> *res = sys.getResult();
-    /*for (int i = 0; i < res->size(); ++i)
+    for (int i = 0; i < res->size(); ++i)
     {
         std::cout << "r " << (*(res))[i] << "\n";
-    }*/
-    (*(this->a))[0] = 0;
+    }
+    //(*(this->a))[0] = 0;
     for (int i = 0; i < this->a->size(); ++i)
     {
         (*(this->a))[i] = (*(this->f))[i];
@@ -71,7 +67,8 @@ void lab3_2::spline::initInterpolation()
     }
     for (int i = 0; i < this->b->size() - 2; ++i)
     {
-        (*(this->b))[i] = ((*(this->f))[i + 1] - (*(this->f))[i]) / 0.4 - 1.0 / 3.0 * 0.4 * ((*(this->c))[i + 2] + 2.0 * (*(this->c))[i + 1]);
+        (*(this->b))[i] = ((*(this->f))[i + 1] - (*(this->f))[i]) / 0.4
+            - 0.4 / 3.0 * ((*(this->c))[i + 2] + 2.0 * (*(this->c))[i + 1]);
     }
     for (int i = 0; i < this->d->size() - 2; ++i)
     {
@@ -80,7 +77,7 @@ void lab3_2::spline::initInterpolation()
     (*(this->c))[0] = 0;
     //int n = this->f->size() - 2;
     int n = 3;
-    (*(this->b))[3] = ((*(this->f))[n] - (*(this->f))[n - 1]) / 0.4 - 2.0 / 3 * 0.4 * (*(res))[res->size() - 1];
+    (*(this->b))[3] = ((*(this->f))[n + 1] - (*(this->f))[n]) / 0.4 - 2.0 / 3 * 0.4 * (*(res))[res->size() - 1];
     (*(this->d))[3] = -(*(res))[res->size() - 1] / (3 * 0.4);
     delete res;
     for (int i = 0; i < this->a->size(); ++i)
@@ -95,23 +92,7 @@ void lab3_2::spline::initInterpolation()
 double lab3_2::spline::getvalue(double arg)
 {
     double fxi = 0;
-    /*for (int i = 0; i < this->a->size(); ++i)
-    {
-        std::cout << "a : " << (*(this->a))[i] << "\n";
-    }
-    for (int i = 0; i < this->b->size(); ++i)
-    {
-        std::cout << "b : " << (*(this->b))[i] << "\n";
-    }
-    for (int i = 0; i < this->c->size(); ++i)
-    {
-        std::cout << "c : " << (*(this->c))[i] << "\n";
-    }
-    for (int i = 0; i < this->d->size(); ++i)
-    {
-        std::cout << "d : " << (*(this->d))[i] << "\n";
-    }
-    */
+    
     int i = 0;
     while (arg >= (*(this->x))[i])
     {
@@ -123,6 +104,7 @@ double lab3_2::spline::getvalue(double arg)
     //if ()
     fxi = (*(this->a))[i] + (*(this->b))[i] * (arg - (*(this->x))[i]) + (*(this->c))[i] * 
         pow((arg - (*(this->x))[i]), 2) + (*(this->d))[i] * pow((arg - (*(this->x))[i]), 3);
+
     //std::cout << "fxi: " << fxi << "\n";
     return fxi;
 }
@@ -134,4 +116,104 @@ void lab3_2::spline::val()
     {
         std::cout << x << " " << this->getvalue(x) << "\n";
     }
+}*/
+
+#include <cstdlib>
+#include <cmath>
+#include <limits>
+
+cubic_spline::cubic_spline() : splines(NULL)
+{
+
+}
+
+cubic_spline::~cubic_spline()
+{
+    free_mem();
+}
+
+void cubic_spline::build_spline(const double *x, const double *y, std::size_t n)
+{
+    free_mem();
+
+    this->n = n;
+
+    // Инициализация массива сплайнов
+    splines = new spline_tuple[n];
+    for (std::size_t i = 0; i < n; ++i)
+    {
+        splines[i].x = x[i];
+        splines[i].a = y[i];
+    }
+    splines[0].c = 0.;
+
+    // Решение СЛАУ относительно коэффициентов сплайнов c[i] методом прогонки для трехдиагональных матриц
+    // Вычисление прогоночных коэффициентов - прямой ход метода прогонки
+    double *alpha = new double[n - 1];
+    double *beta = new double[n - 1];
+    double A, B, C, F, h_i, h_i1, z;
+    alpha[0] = beta[0] = 0.;
+    for (std::size_t i = 1; i < n - 1; ++i)
+    {
+        h_i = x[i] - x[i - 1], h_i1 = x[i + 1] - x[i];
+        A = h_i;
+        C = 2. * (h_i + h_i1);
+        B = h_i1;
+        F = 6. * ((y[i + 1] - y[i]) / h_i1 - (y[i] - y[i - 1]) / h_i);
+        z = (A * alpha[i - 1] + C);
+        alpha[i] = -B / z;
+        beta[i] = (F - A * beta[i - 1]) / z;
+    }
+
+    splines[n - 1].c = (F - A * beta[n - 2]) / (C + A * alpha[n - 2]);
+
+    // Нахождение решения - обратный ход метода прогонки
+    for (std::size_t i = n - 2; i > 0; --i)
+        splines[i].c = alpha[i] * splines[i + 1].c + beta[i];
+
+    // Освобождение памяти, занимаемой прогоночными коэффициентами
+    delete[] beta;
+    delete[] alpha;
+
+    // По известным коэффициентам c[i] находим значения b[i] и d[i]
+    for (std::size_t i = n - 1; i > 0; --i)
+    {
+        double h_i = x[i] - x[i - 1];
+        splines[i].d = (splines[i].c - splines[i - 1].c) / h_i;
+        splines[i].b = h_i * (2. * splines[i].c + splines[i - 1].c) / 6. + (y[i] - y[i - 1]) / h_i;
+    }
+}
+
+double cubic_spline::f(double x) const
+{
+    if (!splines)
+        return std::numeric_limits<double>::quiet_NaN(); // Если сплайны ещё не построены - возвращаем NaN
+
+    spline_tuple *s;
+    if (x <= splines[0].x) // Если x меньше точки сетки x[0] - пользуемся первым эл-том массива
+        s = splines + 1;
+    else if (x >= splines[n - 1].x) // Если x больше точки сетки x[n - 1] - пользуемся последним эл-том массива
+        s = splines + n - 1;
+    else // Иначе x лежит между граничными точками сетки - производим бинарный поиск нужного эл-та массива
+    {
+        std::size_t i = 0, j = n - 1;
+        while (i + 1 < j)
+        {
+            std::size_t k = i + (j - i) / 2;
+            if (x <= splines[k].x)
+                j = k;
+            else
+                i = k;
+        }
+        s = splines + j;
+    }
+
+    double dx = (x - s->x);
+    return s->a + (s->b + (s->c / 2. + s->d * dx / 6.) * dx) * dx; // Вычисляем значение сплайна в заданной точке.
+}
+
+void cubic_spline::free_mem()
+{
+    delete[] splines;
+    splines = NULL;
 }
