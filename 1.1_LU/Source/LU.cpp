@@ -2,17 +2,20 @@
 #include<LU.h>
 #include<utility>
 #include<cmath>
+
 lab1_1::system::system(int size)
 {
     this->size = size;
     this->sys = new std::vector<std::vector<double> >(size, std::vector<double>(size, 0));
     this->ext = new std::vector<double>(size, 0);
 }
+
 lab1_1::system::~system()
 {
     delete this->sys;
     delete this->ext;
 }
+
 lab1_1::LU* lab1_1::system::getLU()
 {
     LU* res = new LU;
@@ -23,9 +26,6 @@ lab1_1::LU* lab1_1::system::getLU()
     {
         (*(res->L))[i][i] = 1;
     }
-
-   // return res;
-
     for (int j = 0; j < this->sys->size() - 1; ++j)
     {
         double max = (*(res->U))[j][j];
@@ -37,31 +37,25 @@ lab1_1::LU* lab1_1::system::getLU()
                 max = (*(res->U))[i][j];
                 maxColum = i;
             }
-            //std::cout « maxColum « " !!! "«i «" " « max «"\n";
         }
         if (maxColum != j)
         {
-            //ïåðåñòàíîâêà!
             swapline(res->U, maxColum, j);
             swapline(res->L, maxColum, j);
             swapcolum(res->L, maxColum, j);
-
             double tmp = (*(this->ext))[maxColum];
             (*(this->ext))[maxColum] = (*(this->ext))[j];
             (*(this->ext))[j] = tmp;
-
             res->p->push_back(std::make_pair(maxColum, j));
         }
         for (int i = j + 1; i < this->sys->size(); ++i)
         {
             double tmp = (-1) * (*(res->U))[i][j] / (*(res->U))[j][j];
-            (*(res->L))[i][j] = -tmp;// this->l->set(i, j, -tmp);
+            (*(res->L))[i][j] = -tmp;
             for (int z = 0; z < this->size; ++z)
-                (*(res->U))[i][z] += (*(res->U))[j][z] * tmp;//this->u->add(j, i, tmp);
-            //(*(this->ext))[j] += tmp;//this->ext->add(j,i, tmp);
+                (*(res->U))[i][z] += (*(res->U))[j][z] * tmp;
         }
     }
-
     return res;
 }
 
@@ -91,7 +85,6 @@ void lab1_1::system::swapcolum(std::vector<std::vector<double> > *arg, int i, in
 
 void lab1_1::setVar1(system *arg)
 {
-
     (*(arg->sys))[0][0] = 1;
     (*(arg->sys))[0][1] = 2;
     (*(arg->sys))[0][2] = -2;
@@ -146,7 +139,6 @@ std::vector<double>* lab1_1::system::getResult(lab1_1::LU* lu)
         {
             undo += (*(lu->L))[i][j] * tmp[j];
         }
-        //std::cout « "!!!!! " « this->ext->get(i,0) « " " « undo « "\n";
         tmp[i] = (*(this->ext))[i] - undo;
     }
 
@@ -158,7 +150,6 @@ std::vector<double>* lab1_1::system::getResult(lab1_1::LU* lu)
         {
             undo += (*(lu->U))[i][j] * (*(res))[j];
         }
-        //std::cout « "!!!!! " « this->u->get(i,i) « " " « undo « "\n";
         (*(res))[i] = (1 / (*(lu->U))[i][i]) * (tmp[i] - undo);
     }
     return res;
@@ -166,7 +157,6 @@ std::vector<double>* lab1_1::system::getResult(lab1_1::LU* lu)
 
 void lab1_1::setVar12(system *arg)
 {
-
     (*(arg->sys))[0][0] = -1;
     (*(arg->sys))[0][1] = -8;
     (*(arg->sys))[0][2] = 0;
@@ -227,15 +217,7 @@ std::vector<std::vector<double> >* lab1_1::system::getRevers()
         delete tmpRes;
     }
 
-   /* for (int i = 0; i < lu->p->size(); ++i)
-    {
-       // swapline(res, (*(lu->p))[i].first, (*(lu->p))[i].second);
-        swapcolum(res, (*(lu->p))[i].first, (*(lu->p))[i].second);
-
-    }*/
-
     delete lu;
-
     return res;
 }
 void lab1_1::system::setSys(int i, int j, double arg)

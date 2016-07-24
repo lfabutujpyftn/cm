@@ -34,6 +34,7 @@ private:
     void free_mem(); // ќсвобождение пам€ти
 
 public:
+    void print();
     cubic_spline(); //конструктор
     ~cubic_spline(); //деструктор
 

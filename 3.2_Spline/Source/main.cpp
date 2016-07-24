@@ -21,11 +21,14 @@ int main()
     y[3] = 1.5624;
     y[4] = 2.2306;
     spl.build_spline(x, y, 5);
-    std::cout << "#x\ty\n";
+    /*std::cout << "#x\ty\n";
     for (double i = 0; i < 1.7; i += 0.01)
     {
         std::cout << i << "\t" << spl.f(i) << "\n";
-    }
+    }*/
+    spl.print();
+//std::cout << "f(x): " << spl.f(0.8) << "\n";
+std::cout << "f(x): " << spl.f(0.0) << "\n";
     system("pause");
     return 0;
 }

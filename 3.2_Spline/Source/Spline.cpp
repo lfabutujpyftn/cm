@@ -207,7 +207,7 @@ double cubic_spline::f(double x) const
         }
         s = splines + j;
     }
-
+    std::cout << "arg " << x <<  " x " << s->x << " a " << s->a << " b " << s->b << " c " << s->c << " d " << s->d << "\n";
     double dx = (x - s->x);
     return s->a + (s->b + (s->c / 2. + s->d * dx / 6.) * dx) * dx; // ¬ычисл€ем значение сплайна в заданной точке.
 }
@@ -216,4 +216,14 @@ void cubic_spline::free_mem()
 {
     delete[] splines;
     splines = NULL;
+}
+
+void cubic_spline::print()
+{
+    std::cout << "a\tb\tc\td\n";
+    for (int i = 0; i < this->n; ++i)
+    {
+        std::cout << "x " << (this->splines[i]).x << " a " << (this->splines[i]).a << "  b " << (this->splines[i]).b
+            << " c " << (this->splines[i]).c << " d " << (this->splines[i]).d << "\n";
+    }
 }

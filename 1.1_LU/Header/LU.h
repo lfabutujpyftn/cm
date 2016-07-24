@@ -9,6 +9,7 @@ namespace lab1_1
         std::vector<std::vector<double> > *U;
         std::vector<std::pair<int, int> > *p;
     };
+
     class system
     {
     private:
@@ -31,7 +32,5 @@ namespace lab1_1
         friend void setVar12(system *arg);
         friend void print(system *arg);
         void print();
-
-
     };
 }
