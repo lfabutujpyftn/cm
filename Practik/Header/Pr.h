@@ -15,7 +15,9 @@ namespace practik
         void printGraficValuetwo(int n);
         void printGraficValue();
         void printGraficValuetwo();
+        void mainFunc2();
         void printData();
+        void printsprpol();
     private:
         std::vector<std::pair<double, double> > *data;
 
@@ -23,6 +25,7 @@ namespace practik
         void initTable0two();
         double getValuePolinom(std::vector<double>* arr, double arg);
         double getValuePolinomTwo(std::vector<double>* arr, double arg);
+        double getsprpol(double arg);
 
     };
 }

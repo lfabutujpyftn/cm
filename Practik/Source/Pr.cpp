@@ -354,3 +354,31 @@ void practik::polinom::printGraficValuetwo()
         delete res;
     }
 }
+
+void practik::polinom::printsprpol()
+{
+    for (double i = (*(this->data))[0].first; i < (*(this->data))[this->data->size() - 1].first; i += .1)
+    {
+        std::cout << i << "\t" << this->getsprpol(i) << "\n";
+    }
+}
+
+double practik::polinom::getsprpol(double arg)
+{
+    arg *= pow(10, -4);
+    double f0 = 214.7962;
+    double fln = 21.2418;   
+    double fm2 = 0.002034;
+    double fm1 = -0.05871;
+    double f1 = -2.5011;
+    double f2 = 2.558;
+    double f3 = -0.531;
+    double res = fln + 2 * fm2 / pow(arg, 2) + 2 * f1 * arg + 6 * f2 * pow(arg, 2) + 12 * f3 * pow(arg,3);
+    return res;
+}
+
+void practik::polinom::mainFunc2()
+{
+    this->initTable0();
+    this->printsprpol();
+}
